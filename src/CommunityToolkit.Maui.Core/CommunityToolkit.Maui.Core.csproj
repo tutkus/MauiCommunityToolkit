@@ -73,6 +73,14 @@
     <None Include="**\windows\**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+    <PackageReference Include="Xamarin.AndroidX.Camera.Camera2" Version="1.0.2.3" />
+    <PackageReference Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.0.2.3" />
+    <PackageReference Include="Xamarin.AndroidX.Camera.View" Version="1.0.0.5-alpha20" />
+    <PackageReference Include="Xamarin.Google.Guava.ListenableFuture" Version="1.0.0.6" />
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.7.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Include="..\..\build\nuget.png" PackagePath="icon.png" Pack="true" />
     <None Include="ReadMe.txt" pack="true" PackagePath="." />
