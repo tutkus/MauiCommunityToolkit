@@ -74,11 +74,17 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
-    <PackageReference Include="Xamarin.AndroidX.Camera.Camera2" Version="1.0.2.3" />
+    <!--<PackageReference Include="Xamarin.AndroidX.Camera.Camera2" Version="1.0.2.3" />
     <PackageReference Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.0.2.3" />
     <PackageReference Include="Xamarin.AndroidX.Camera.View" Version="1.0.0.5-alpha20" />
     <PackageReference Include="Xamarin.Google.Guava.ListenableFuture" Version="1.0.0.6" />
-    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.7.0" />
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.7.0" />-->
+
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.7.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.Camera.Lifecycle" Version="1.0.2.4" />
+    <PackageReference Include="Xamarin.AndroidX.Camera.Camera2" Version="1.0.2.4" />
+    <PackageReference Include="Xamarin.AndroidX.Camera.View" Version="1.0.0.5-alpha20" />
+    <PackageReference Include="Xamarin.Google.Guava.ListenableFuture" Version="1.0.0.6" />
   </ItemGroup>
 
   <ItemGroup>
