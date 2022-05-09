@@ -5,6 +5,8 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using LayoutAlignment = Microsoft.Maui.Primitives.LayoutAlignment;
 using WindowsThickness = Microsoft.UI.Xaml.Thickness;
 using XamlStyle = Microsoft.UI.Xaml.Style;
+using Point = Windows.Foundation.Point;
+using Microsoft.UI.Xaml;
 
 namespace CommunityToolkit.Maui.Core.Views;
 
@@ -103,8 +105,13 @@ public class MauiPopup : Flyout
 		{
 			var frameworkElement = VirtualView.Parent.ToPlatform(mauiContext);
 			frameworkElement.ContextFlyout = this;
-			SetAttachedFlyout(frameworkElement, this);
-			ShowAttachedFlyout(frameworkElement);
+			
+			ShowAt(frameworkElement, new FlyoutShowOptions()
+			{				
+				Position = GetReferencePosition(GetActualBounds(frameworkElement))
+			});
+
+
 		}
 		VirtualView.OnOpened();
 	}
@@ -179,7 +186,7 @@ public class MauiPopup : Flyout
 		LightDismissOverlayMode = LightDismissOverlayMode.On;
 
 		if (VirtualView is not null)
-		{
+		{			
 			this.SetDialogPosition(VirtualView.VerticalOptions, VirtualView.HorizontalOptions);
 		}
 	}
@@ -189,6 +196,8 @@ public class MauiPopup : Flyout
 		_ = VirtualView?.Content ?? throw new NullReferenceException(nameof(IPopup.Content));
 
 		var color = VirtualView.Color ?? Colors.Transparent;
+
+		
 
 		FlyoutStyle.Setters.Add(new Microsoft.UI.Xaml.Setter(FlyoutPresenter.BackgroundProperty, color.ToWindowsColor()));
 
@@ -212,6 +221,42 @@ public class MauiPopup : Flyout
 		}
 
 		FlyoutPresenterStyle = FlyoutStyle;
+	}
+
+
+	Rect GetActualBounds(FrameworkElement frameworkElement)
+	{
+		var location = new Microsoft.Maui.Graphics.Point(frameworkElement.ActualOffset.X, frameworkElement.ActualOffset.Y);
+		var size = new Size(frameworkElement.ActualSize.X, frameworkElement.ActualSize.Y);
+		return new Rect(location, size);
+	}
+
+	Point? GetReferencePosition(Rect area)
+	{
+		switch (Placement)
+		{
+			case FlyoutPlacementMode.TopEdgeAlignedLeft:
+				return new Point(area.Left, area.Top);
+			case FlyoutPlacementMode.Top:
+				return new Point(area.Center.X, area.Top);
+			case FlyoutPlacementMode.TopEdgeAlignedRight:
+				return new Point(area.Right, area.Top);
+
+			case FlyoutPlacementMode.BottomEdgeAlignedLeft:
+				return new Point(area.Left, area.Bottom);
+			case FlyoutPlacementMode.Bottom:
+				return new Point(area.Center.X, area.Bottom);
+			case FlyoutPlacementMode.BottomEdgeAlignedRight:
+				return new Point(area.Right, area.Bottom);
+
+			case FlyoutPlacementMode.Left:
+				return new Point(area.Left + VirtualView?.Content?.Width ?? 0, area.Center.Y);			
+			case FlyoutPlacementMode.Right:
+				return new Point(area.Right, area.Center.Y);
+			
+			default:
+				return null;
+		}
 	}
 
 	void SetDialogPosition(LayoutAlignment verticalOptions, LayoutAlignment horizontalOptions)
